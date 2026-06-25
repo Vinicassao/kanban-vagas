@@ -1,0 +1,22 @@
+# Dependências do Node
+node_modules/
+
+# Variáveis de Ambiente (CRÍTICO: Nunca suba suas senhas do banco!)
+.env
+.env.*
+
+# Arquivos de Build do TypeScript (Código compilado)
+dist/
+build/
+
+# Logs de erro do NPM
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos do Sistema Operacional (Evita sujeira no repositório)
+.DS_Store
+Thumbs.db
+
+# Pastas de cobertura de testes (se for fazer testes no futuro)
+coverage/
