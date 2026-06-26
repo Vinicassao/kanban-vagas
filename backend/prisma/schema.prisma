@@ -1,13 +1,36 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
+// Configuração do Prisma Client para o Node.js
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
+// Configuração da sua conexão com o PostgreSQL
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Criamos um ENUM. Isso garante que a vaga só pode ter um desses 5 status.
+// É uma excelente prática de segurança e integridade de dados.
+enum StatusVaga {
+  APLICADO
+  TESTE
+  ENTREVISTA
+  OFERTA
+  REJEITADO
+}
+
+// Nossa tabela principal
+model Vaga {
+  id             String     @id @default(uuid())
+  empresa        String
+  cargo          String
+  link_vaga      String?    // A interrogação indica que o campo é opcional
+  salario        Decimal?   // Salário também é opcional
+  status         StatusVaga @default(APLICADO)
+  data_aplicacao DateTime   @default(now())
+  
+  criado_em      DateTime   @default(now())
+  atualizado_em  DateTime   @updatedAt // O Prisma atualiza essa data sozinho!
+
+  @@map("vagas") // Isso diz ao Postgres para criar a tabela com o nome "vagas" em minúsculo
 }
