@@ -1,0 +1,1 @@
+console.log('Kanban-Vagas! O Servidor typescript está ´pronto.');
