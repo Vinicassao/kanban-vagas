@@ -1,11 +1,14 @@
 import { prisma } from "../lib/prismaClient";
-async function main () {
-const vaga = await prisma.vaga.create({
-    data: {
-        cargo: "Estágiario",
-        empresa: "Rhodium"
-    },
-});
-console.log(vaga);
+
+interface CreateVagaRequest {
+    empresa: string;
+    cargo: string;
+    link_vaga?: string;
+    salario?: number;
 }
-main();
+
+export class CreateVagaRequest {
+    async execute({empresa, cargo, link_vaga, salario}: CreateVagaRequest) {
+        
+    }
+}
