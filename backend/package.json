@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev --transpile-only -r dotenv/config --ignore-watch node_modules src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +13,7 @@
   "dependencies": {
     "@prisma/client": "^5.22.0",
     "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1"
   },
   "devDependencies": {
