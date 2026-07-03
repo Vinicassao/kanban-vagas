@@ -1,8 +1,10 @@
-const service = new CreateVagaService();
+import { Request, Response } from "express";
+import { CreateVagaService} from "../services/CreateVagaService";
 
-await service.execute({
-    empresa: "Rhodium",
-    cargo: "Ajudante de produção",
-    link_vaga: "https://...",
-    salario: 2200,
-});
+export class VagasController {
+    async create(req: Request, res: Response) {
+        const {empresa, cargo, link_vaga, salario} = req.body;
+        const createVagaService = new CreateVagaService();
+        await createVagaService.execute(function createVagaService.execute);
+    }
+}
