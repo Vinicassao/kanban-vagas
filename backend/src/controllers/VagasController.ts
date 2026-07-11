@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { CreateVagaService } from "../services/CreateVagaService";
+import { ListVagasService } from "../services/ListVagasService";
 
 export class VagasController {
   async create(req: Request, res: Response) {
@@ -20,6 +21,18 @@ export class VagasController {
       return res
         .status(500)
         .json({ error: "Erro ao criar a vaga. Verifique os dados enviado." });
+    }
+  }
+  async list(req: Request, res: Response) {
+    try {
+      const listVagasService = new ListVagasService();
+      const vagas = await listVagasService.execute();
+      return res.status(200).json(vagas);
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(500)
+        .json({ error: "Erro ao trazer a lista de vagas." });
     }
   }
 }
