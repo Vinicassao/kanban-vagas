@@ -5,5 +5,7 @@ const vagasRoutes = Router();
 
 const vagasController = new VagasController();
 
-vagasRoutes.post('/', vagasController.create);
-export{vagasRoutes};
+vagasRoutes.post("/", vagasController.create);
+vagasRoutes.get("/", vagasController.list);
+
+export { vagasRoutes };
