@@ -23,6 +23,7 @@ export class VagasController {
         .json({ error: "Erro ao criar a vaga. Verifique os dados enviado." });
     }
   }
+
   async list(req: Request, res: Response) {
     try {
       const listVagasService = new ListVagasService();
@@ -34,5 +35,9 @@ export class VagasController {
         .status(500)
         .json({ error: "Erro ao trazer a lista de vagas." });
     }
+  }
+
+  async uptadeStatus(req: Request, res:Response) {
+    
   }
 }
