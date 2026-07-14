@@ -1,13 +1,13 @@
 import { StatusVaga } from "@prisma/client";
 import { prisma } from "../lib/prismaClient";
 
-interface UptadeVagaStatusServiceRequest {
+interface UpdateVagaStatusServiceRequest {
   status: StatusVaga;
   id: string;
 }
 
-export class UptadeVagaStatusService {
-  async execute({ id, status }: UptadeVagaStatusServiceRequest) {
+export class UpdateVagaStatusService {
+  async execute({ id, status }: UpdateVagaStatusServiceRequest) {
     const vaga = await prisma.vaga.update({
       where: { id },
       data: { status },
