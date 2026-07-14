@@ -39,6 +39,7 @@ export class VagasController {
   }
 
   async updateStatus(req: Request, res: Response) {
+    try {
     const updateVagaStatusService = new UpdateVagaStatusService();
     const id = req.params.id as string;
     const { status } = req.body;
@@ -46,6 +47,10 @@ export class VagasController {
       id,
       status,
     });
-    return res.status(201).json(vaga);
+    return res.status(200).json(vaga);
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({error: "Erro ao tentar atualizar o status da vaga"});
+      }
   }
 }
