@@ -40,10 +40,10 @@ export class VagasController {
 
   async updateStatus(req: Request, res: Response) {
     try {
-    const updateVagaStatusService = new UpdateVagaStatusService();
+    const updateStatusService = new UpdateVagaStatusService();
     const id = req.params.id as string;
     const { status } = req.body;
-    const vaga = await updateVagaStatusService.execute({
+    const vaga = await updateStatusService.execute({
       id,
       status,
     });
