@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { CreateVagaService } from "../services/CreateVagaService";
 import { ListVagasService } from "../services/ListVagasService";
+import { UpdateVagaStatusService } from "../services/UptadeVagaStatusService";
 
 export class VagasController {
   async create(req: Request, res: Response) {
@@ -37,7 +38,14 @@ export class VagasController {
     }
   }
 
-  async uptadeStatus(req: Request, res:Response) {
-    
+  async updateStatus(req: Request, res: Response) {
+    const updateVagaStatusService = new UpdateVagaStatusService();
+    const id = req.params.id as string;
+    const { status } = req.body;
+    const vaga = await updateVagaStatusService.execute({
+      id,
+      status,
+    });
+    return res.status(201).json(vaga);
   }
 }
