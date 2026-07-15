@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { CreateVagaService } from "../services/CreateVagaService";
 import { ListVagasService } from "../services/ListVagasService";
 import { UpdateVagaStatusService } from "../services/UptadeVagaStatusService";
+import { DeleteVagaService } from "../services/DeleteVagaService";
 
 export class VagasController {
   async create(req: Request, res: Response) {
@@ -40,17 +41,33 @@ export class VagasController {
 
   async updateStatus(req: Request, res: Response) {
     try {
-    const updateVagaStatusService = new UpdateVagaStatusService();
-    const id = req.params.id as string;
-    const { status } = req.body;
-    const vaga = await updateVagaStatusService.execute({
-      id,
-      status,
-    });
-    return res.status(200).json(vaga);
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({error: "Erro ao tentar atualizar o status da vaga"});
-      }
+      const updateStatusService = new UpdateVagaStatusService();
+      const id = req.params.id as string;
+      const { status } = req.body;
+      const vaga = await updateStatusService.execute({
+        id,
+        status,
+      });
+      return res.status(200).json(vaga);
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(500)
+        .json({ error: "Erro ao tentar atualizar o status da vaga" });
+    }
+  }
+
+  async deleteVaga(req: Request, res: Response) {
+    try {
+      const id = req.params.id as string;
+      const deleteVagaService = new DeleteVagaService();
+      await deleteVagaService.execute({
+        id,
+      });
+      return res.sendStatus(204)
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({error: "Registro não encontrado"});
+    }
   }
 }
