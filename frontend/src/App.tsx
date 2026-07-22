@@ -1,7 +1,9 @@
-export default function app() {
+import { Board } from "./components/Board";
+
+export default function App() {
   return (
     <div>
-      <h1>Meu Kanban</h1>
+      <Board/>
     </div>
-  )
+  );
 }
