@@ -1,7 +1,13 @@
-export function Card() {
+interface CardProps {
+    empresa: string;
+    cargo: string;
+}
+
+export function Card({empresa, cargo}: CardProps) {
     return (
         <div>
-            <p>Card da Vaga</p>
+            <p>{empresa}</p>
+            <p>{cargo}</p>
         </div>
     )
 }

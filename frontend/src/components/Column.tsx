@@ -1,9 +1,17 @@
 import { Card } from "./Card";
 
-export function Column() {
+interface ColumnProps {
+  title: string;
+}
+
+export function Column({title}: ColumnProps) {
   return (
     <div>
-      <Card />
+      <h1>{title}</h1>
+      <Card
+      empresa=""
+      cargo=""
+      />
     </div>
   );
 }

@@ -3,9 +3,9 @@ import { Column } from "./Column";
 export function Board() {
   return (
     <div>
-      <Column />
-      <Column />
-      <Column />
+      <Column title="Aplicado"/>
+      <Column title="Entrevista"/>
+      <Column title="Finalizado"/>
     </div>
   );
 }
