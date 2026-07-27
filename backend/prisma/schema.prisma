@@ -15,7 +15,7 @@ enum StatusVaga {
   APLICADO
   TESTE
   ENTREVISTA
-  OFERTA
+  CONTRATADO
   REJEITADO
 }
 
