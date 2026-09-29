@@ -9,5 +9,8 @@ export interface Vaga {
   id: string;
   empresa: string;
   cargo: string;
-  status: string;
+  status: StatusVaga;
+  modalidade?: string;
+  salario?: string;
+  link?: string;
 }
