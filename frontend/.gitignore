@@ -8,9 +8,11 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.npm-cache/
 dist
 dist-ssr
 *.local
+build/
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +24,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+/frontend/DESIGN.md
+/frontend/SECURITY.md
+
+# Pastas de cobertura de testes (se for fazer testes no futuro)
+coverage/
