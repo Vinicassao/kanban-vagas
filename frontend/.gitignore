@@ -12,6 +12,7 @@ node_modules
 dist
 dist-ssr
 *.local
+build/
 
 # Editor directories and files
 .vscode/*
@@ -25,3 +26,6 @@ dist-ssr
 *.sw?
 /frontend/DESIGN.md
 /frontend/SECURITY.md
+
+# Pastas de cobertura de testes (se for fazer testes no futuro)
+coverage/
