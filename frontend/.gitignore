@@ -29,3 +29,6 @@ build/
 
 # Pastas de cobertura de testes (se for fazer testes no futuro)
 coverage/
+
+DESIGN.md
+SECURITY.md
