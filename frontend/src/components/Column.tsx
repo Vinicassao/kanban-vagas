@@ -6,7 +6,7 @@ interface ColumnProps {
   status: StatusVaga;
   color: string;
   vagas: Vaga[];
-  onAdd: () => void;
+  onAdd?: () => void;
   onMove: (id: string, status: StatusVaga) => void;
 }
 export function Column({
@@ -41,9 +41,11 @@ export function Column({
           {title}
           <span>{vagas.length}</span>
         </h3>
-        <button aria-label={`Adicionar vaga em ${title}`} onClick={onAdd}>
-          ＋
-        </button>
+        {onAdd && (
+          <button type="button" aria-label={`Adicionar vaga em ${title}`} onClick={onAdd}>
+            ＋
+          </button>
+        )}
       </div>
       <div className="column-cards">
         {vagas.map((v) => (
@@ -65,9 +67,11 @@ export function Column({
           </div>
         )}
       </div>
-      <button className="add-card" onClick={onAdd}>
-        ＋ Adicionar vaga
-      </button>
+      {onAdd && (
+        <button type="button" className="add-card" onClick={onAdd}>
+          ＋ Adicionar vaga
+        </button>
+      )}
     </section>
   );
 }

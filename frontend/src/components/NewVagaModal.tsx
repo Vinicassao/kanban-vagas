@@ -1,16 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
-import type { StatusVaga, Vaga } from "../types/Vaga";
-import { stages } from "../types/stages";
-import { validateVaga } from "../security/vagaValidation";
+import type { CreateVagaInput } from "../types/Vaga";
+import { validateCreateVaga } from "../security/vagaValidation";
 export function NewVagaModal({
-  status,
   onClose,
   onSave,
 }: {
-  status: StatusVaga;
   onClose: () => void;
-  onSave: (vaga: Vaga) => void;
+  onSave: (vaga: CreateVagaInput) => void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [error, setError] = useState("");
@@ -21,14 +18,11 @@ export function NewVagaModal({
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     try {
-      const vaga = validateVaga({
-        id: crypto.randomUUID(),
+      const vaga = validateCreateVaga({
         empresa: data.get("empresa"),
         cargo: data.get("cargo"),
-        status: data.get("status"),
-        link: data.get("link"),
+        link_vaga: data.get("link_vaga"),
         salario: data.get("salario"),
-        modalidade: data.get("modalidade"),
       });
       setError("");
       onSave(vaga);
@@ -45,7 +39,6 @@ export function NewVagaModal({
       ref={dialog}
       className="vaga-modal"
       onCancel={onClose}
-      
       aria-labelledby="modal-title"
     >
       <div className="modal-heading">
@@ -53,11 +46,11 @@ export function NewVagaModal({
           <p className="eyebrow">UMA NOVA POSSIBILIDADE</p>
           <h2 id="modal-title">Adicionar vaga</h2>
         </div>
-        <button className="close-modal" onClick={onClose} aria-label="Fechar">
+        <button type="button" className="close-modal" onClick={onClose} aria-label="Fechar">
           ×
         </button>
       </div>
-      <p>Guarde uma oportunidade e acompanhe cada etapa.</p>
+      <p>Novas vagas começam na etapa Aplicado. Depois, você pode movê-las no quadro.</p>
       <form onSubmit={submit}>
         <label>
           Empresa *
@@ -80,31 +73,10 @@ export function NewVagaModal({
             placeholder="Ex.: Desenvolvedor Júnior"
           />
         </label>
-        <div className="form-row">
-          <label>
-            Etapa
-            <select name="status" defaultValue={status}>
-              {stages.map((s) => (
-                <option key={s.status} value={s.status}>
-                  {s.title}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Modalidade
-            <select name="modalidade">
-              <option>A definir</option>
-              <option>Remoto</option>
-              <option>Híbrido</option>
-              <option>Presencial</option>
-            </select>
-          </label>
-        </div>
         <label>
           Link da vaga
           <input
-            name="link"
+            name="link_vaga"
             type="url"
             maxLength={2048}
             placeholder="https://..."

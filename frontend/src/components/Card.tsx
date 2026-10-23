@@ -29,7 +29,6 @@ export function Card({
       <p className="company-name">{empresa}</p>
       <h4>{cargo}</h4>
       <div className="card-tags">
-        <span>{vaga.modalidade || "A definir"}</span>
         <span>Oportunidade</span>
       </div>
       {vaga.salario && (

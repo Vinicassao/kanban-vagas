@@ -1,9 +1,36 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { safeExternalUrl, validateVaga, validateVagas } from '../src/security/vagaValidation.ts';
+import { safeExternalUrl, validateCreateVaga, validateVaga, validateVagas } from '../src/security/vagaValidation.ts';
 import { loadVagas, saveVagas } from '../src/services/vagasStorage.ts';
 
 const valid = { id: '1', empresa: 'Empresa', cargo: 'Desenvolvedor', status: 'APLICADO' };
+
+test('criação entrega apenas os campos aceitos pela API e converte salário', () => {
+  const input = validateCreateVaga({
+    ...valid, empresa: ' Empresa ', cargo: ' Desenvolvedor ',
+    status: 'TESTE', modalidade: 'Remoto',
+    link_vaga: ' HTTPS://EXAMPLE.COM/vaga ', salario: '4500.50',
+  });
+  assert.deepEqual(input, {
+    empresa: 'Empresa', cargo: 'Desenvolvedor',
+    link_vaga: 'https://example.com/vaga', salario: 4500.5,
+  });
+});
+
+test('criação omite opcionais vazios e preserva salário zero', () => {
+  const fields = { empresa: 'Empresa', cargo: 'Dev' };
+  assert.deepEqual(validateCreateVaga(fields), fields);
+  assert.deepEqual(validateCreateVaga({ ...fields, link_vaga: ' ', salario: '' }), fields);
+  assert.deepEqual(validateCreateVaga({ ...fields, salario: '0' }), { ...fields, salario: 0 });
+});
+
+test('criação rejeita obrigatórios em branco, salário inválido e link inseguro', () => {
+  for (const changes of [
+    { empresa: ' ' }, { cargo: '' }, { salario: '-1' },
+    { salario: '1.234' }, { salario: 'Infinity' },
+    { link_vaga: 'javascript:alert(1)' },
+  ]) assert.throws(() => validateCreateVaga({ ...valid, ...changes }));
+});
 
 for (const url of [
   'javascript:alert(1)', 'JaVaScRiPt:alert(1)', 'data:text/html,<script>alert(1)</script>',

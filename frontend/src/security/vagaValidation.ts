@@ -1,4 +1,4 @@
-import type { StatusVaga, Vaga } from "../types/Vaga";
+import type { CreateVagaInput, StatusVaga, Vaga } from "../types/Vaga";
 import { stages } from "../types/stages.ts";
 
 const modalidades = ["A definir", "Remoto", "Híbrido", "Presencial"];
@@ -57,6 +57,40 @@ function optionalText(value: unknown, field: string): string {
   return value.trim();
 }
 
+function validateSalario(value: unknown): string {
+  const salario = optionalText(value, "Salário");
+  if (
+    salario &&
+    (!/^\d{1,9}(\.\d{1,2})?$/.test(salario) ||
+      !Number.isFinite(Number(salario)))
+  ) {
+    throw new Error(
+      "Salário: informe um valor não negativo com até 9 dígitos e 2 casas decimais.",
+    );
+  }
+  return salario;
+}
+
+export function validateCreateVaga(input: unknown): CreateVagaInput {
+  if (!input || typeof input !== "object" || Array.isArray(input))
+    throw new Error("Dados de criação inválidos.");
+  const value = input as Record<string, unknown>;
+  const empresa = text(value.empresa, 100, "Empresa");
+  const cargo = text(value.cargo, 120, "Cargo");
+  const salario = validateSalario(value.salario);
+  const rawLink = optionalText(value.link_vaga, "Link");
+  const link = rawLink ? safeExternalUrl(rawLink) : "";
+  if (link === null)
+    throw new Error("Link: use uma URL HTTP ou HTTPS, sem usuário ou senha.");
+
+  return {
+    empresa,
+    cargo,
+    ...(link ? { link_vaga: link } : {}),
+    ...(salario !== "" ? { salario: Number(salario) } : {}),
+  };
+}
+
 export function validateVaga(input: unknown): Vaga {
   if (!input || typeof input !== "object" || Array.isArray(input))
     throw new Error("Vaga inválida.");
@@ -69,16 +103,7 @@ export function validateVaga(input: unknown): Vaga {
   const modalidade = optionalText(value.modalidade, "Modalidade");
   if (modalidade && !modalidades.includes(modalidade))
     throw new Error("Selecione uma modalidade válida.");
-  const salario = optionalText(value.salario, "Salário");
-  if (
-    salario &&
-    (!/^\d{1,9}(\.\d{1,2})?$/.test(salario) ||
-      !Number.isFinite(Number(salario)))
-  ) {
-    throw new Error(
-      "Salário: informe um valor positivo com até 9 dígitos e 2 casas decimais.",
-    );
-  }
+  const salario = validateSalario(value.salario);
   const rawLink = optionalText(value.link, "Link");
   const link = rawLink ? safeExternalUrl(rawLink) : "";
   if (link === null)

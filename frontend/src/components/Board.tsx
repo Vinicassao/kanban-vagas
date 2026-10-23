@@ -7,7 +7,7 @@ import { useVagas } from "../hooks/useVagas";
 
 export function Board() {
   const { vagas, storageError, stats, addVaga, moveVaga: move } = useVagas();
-  const [modal, setModal] = useState<StatusVaga | null>(null);
+  const [isNewVagaModalOpen, setIsNewVagaModalOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("TODAS");
   const [view, setView] = useState<"board" | "list">("board");
@@ -62,7 +62,7 @@ export function Board() {
                 Acompanhe suas oportunidades, do primeiro contato à conquista.
               </p>
             </div>
-            <button className="primary" onClick={() => setModal("APLICADO")}>
+            <button type="button" className="primary" onClick={() => setIsNewVagaModalOpen(true)}>
               <span>＋</span> Nova vaga
             </button>
           </div>
@@ -164,7 +164,7 @@ export function Board() {
                       key={s.status}
                       {...s}
                       vagas={filtered.filter((v) => v.status === s.status)}
-                      onAdd={() => setModal(s.status)}
+                      onAdd={s.status === "APLICADO" ? () => setIsNewVagaModalOpen(true) : undefined}
                       onMove={move}
                     />
                   ))}
@@ -220,13 +220,14 @@ export function Board() {
           </section>
         </main>
       </div>
-      {modal && (
+      {isNewVagaModalOpen && (
         <NewVagaModal
-          status={modal}
-          onClose={() => setModal(null)}
+          onClose={() => setIsNewVagaModalOpen(false)}
           onSave={(vaga) => {
             addVaga(vaga);
-            setModal(null);
+            setQuery("");
+            setFilter("TODAS");
+            setIsNewVagaModalOpen(false);
           }}
         />
       )}

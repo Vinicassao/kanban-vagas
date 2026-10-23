@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { loadVagas, saveVagas } from "../services/vagasStorage";
-import type { StatusVaga, Vaga } from "../types/Vaga";
+import type { CreateVagaInput, StatusVaga, Vaga } from "../types/Vaga";
 import { isStatusVaga, validateVaga } from "../security/vagaValidation";
 
 export function useVagas() {
@@ -19,8 +19,16 @@ export function useVagas() {
     setVagas(next);
   }
 
-  function addVaga(vaga: Vaga) {
-    const validated = validateVaga(vaga);
+  function addVaga(input: CreateVagaInput) {
+    // Adaptação temporária ao armazenamento local; será substituída pelo POST.
+    const validated = validateVaga({
+      id: crypto.randomUUID(),
+      empresa: input.empresa,
+      cargo: input.cargo,
+      status: "APLICADO",
+      link: input.link_vaga,
+      salario: input.salario === undefined ? undefined : String(input.salario),
+    });
     if (vagas.some((existing) => existing.id === validated.id))
       throw new Error("Esta vaga já existe.");
     updateVagas([...vagas, validated]);
